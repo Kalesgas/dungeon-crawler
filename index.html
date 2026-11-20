@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dungeon Crawler</title>
+  </head>
+  <body>
+    <main class="layout">
+      <h1>Dungeon Crawler</h1>
+      <canvas id="game"></canvas>
+      <div class="panel">
+        <ul id="log" class="log"></ul>
+        <p class="help">
+          Ходить: <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> или <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+          · Новое подземелье: <kbd>R</kbd>
+          · Сид: <span id="seed"></span>
+        </p>
+      </div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
