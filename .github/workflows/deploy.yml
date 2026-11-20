@@ -1,0 +1,67 @@
+# Автоматическая проверка и публикация игры.
+#
+# - На каждый pull request: проверка типов, тесты и сборка.
+#   Если что-то сломано, в PR появится красный крестик.
+# - На каждый push в main: то же самое, плюс публикация на GitHub Pages.
+name: Проверка и публикация
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch: # кнопка ручного запуска на вкладке Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Если пришло несколько пушей подряд, публикуем только последний.
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Тесты и сборка
+    runs-on: ubuntu-latest
+    steps:
+      - name: Скачать код
+        uses: actions/checkout@v7
+
+      - name: Установить Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Установить зависимости
+        run: npm ci
+
+      - name: Проверить типы
+        run: npm run typecheck
+
+      - name: Запустить тесты
+        run: npm test
+
+      - name: Собрать игру
+        run: npm run build
+
+      - name: Подготовить файлы для Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    name: Публикация на GitHub Pages
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Опубликовать
+        id: deployment
+        uses: actions/deploy-pages@v5
