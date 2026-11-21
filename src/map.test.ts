@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { generateDungeon, getTile, isWalkable, roomCenter, type DungeonMap } from './map';
+import { generateDungeon, getTile, isWalkable, isWallVisible, roomCenter, type DungeonMap } from './map';
 import { createRng } from './rng';
 
 function makeMap(seed: number): DungeonMap {
@@ -59,6 +59,17 @@ describe('generateDungeon', () => {
       const walkable = map.tiles.filter((tile) => tile !== 'wall').length;
       expect(countReachable(map, start.x, start.y)).toBe(walkable);
     }
+  });
+
+  it('видны только стены, которые касаются пола', () => {
+    const map = makeMap(3);
+    const room = map.rooms[0];
+    // Стена прямо над левым верхним углом комнаты касается пола — видна.
+    expect(isWallVisible(map, room.x, room.y - 1)).toBe(true);
+    // Угол карты — сплошная скала, до пола далеко.
+    expect(isWallVisible(map, 0, 0)).toBe(false);
+    // Пол — не стена, «видимой стеной» быть не может.
+    expect(isWallVisible(map, room.x, room.y)).toBe(false);
   });
 
   it('ровно одна лестница вниз', () => {

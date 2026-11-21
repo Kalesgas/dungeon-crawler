@@ -1,7 +1,10 @@
 import type { GameState } from './game';
-import { getTile, type Tile } from './map';
+import { getTile, isWallVisible, type Tile } from './map';
 
 export const TILE_SIZE = 16;
+
+/** Цвет сплошной скалы — стен, до которых не дотянуться. */
+const ROCK_COLOR = '#08070b';
 
 const TILE_STYLE: Record<Tile, { background: string; glyph: string; color: string }> = {
   wall: { background: '#1f1c26', glyph: '#', color: '#3d3849' },
@@ -43,7 +46,13 @@ export function render(ctx: CanvasRenderingContext2D, state: GameState): void {
 
   for (let y = 0; y < map.height; y++) {
     for (let x = 0; x < map.width; x++) {
-      const style = TILE_STYLE[getTile(map, x, y)];
+      const tile = getTile(map, x, y);
+      if (tile === 'wall' && !isWallVisible(map, x, y)) {
+        ctx.fillStyle = ROCK_COLOR;
+        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        continue;
+      }
+      const style = TILE_STYLE[tile];
       ctx.fillStyle = style.background;
       ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
       drawGlyph(ctx, x, y, style.glyph, style.color);
