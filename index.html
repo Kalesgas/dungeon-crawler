@@ -8,11 +8,23 @@
   <body>
     <main class="layout">
       <h1>Dungeon Crawler</h1>
+      <section class="hud" aria-label="Состояние героя">
+        <div class="hud-hp">
+          <span class="hud-label">Здоровье</span>
+          <div class="hp-bar"><div id="hp-fill" class="hp-fill"></div></div>
+          <span id="hp-text" class="hud-value"></span>
+        </div>
+        <div class="hud-stat"><span class="hud-label">Атака</span><span id="attack" class="hud-value"></span></div>
+        <div class="hud-stat"><span class="hud-label">Защита</span><span id="defense" class="hud-value"></span></div>
+        <div class="hud-stat"><span class="hud-label">Этаж</span><span id="floor" class="hud-value"></span></div>
+        <div class="hud-stat"><span class="hud-label">Убито</span><span id="kills" class="hud-value"></span></div>
+      </section>
       <canvas id="game"></canvas>
       <div class="panel">
         <ul id="log" class="log"></ul>
         <p class="help">
-          Ходить: <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> или <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+          Ходить и атаковать: <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd> или <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+          · Ждать: <kbd>Пробел</kbd>
           · Новое подземелье: <kbd>R</kbd>
           · Сид: <span id="seed"></span>
         </p>
