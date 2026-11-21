@@ -1,5 +1,6 @@
 import type { GameState } from './game';
 import { getTile, isWallVisible, type Tile } from './map';
+import { MONSTER_TEMPLATES } from './monsters';
 
 export const TILE_SIZE = 16;
 
@@ -57,6 +58,13 @@ export function render(ctx: CanvasRenderingContext2D, state: GameState): void {
       ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
       drawGlyph(ctx, x, y, style.glyph, style.color);
     }
+  }
+
+  for (const monster of state.monsters) {
+    const template = MONSTER_TEMPLATES[monster.kind];
+    ctx.fillStyle = TILE_STYLE.floor.background;
+    ctx.fillRect(monster.x * TILE_SIZE, monster.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    drawGlyph(ctx, monster.x, monster.y, template.glyph, template.color);
   }
 
   ctx.fillStyle = TILE_STYLE.floor.background;
