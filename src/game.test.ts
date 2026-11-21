@@ -17,7 +17,7 @@ describe('movePlayer', () => {
     const start = { ...state.player };
     // Герой стоит в центре комнаты (минимум 4×4), так что слева от него пол.
     expect(movePlayer(state, 'left')).toBe(true);
-    expect(state.player).toEqual({ x: start.x - 1, y: start.y });
+    expect(state.player).toMatchObject({ x: start.x - 1, y: start.y });
   });
 
   it('не пускает героя в стену', () => {
@@ -29,7 +29,7 @@ describe('movePlayer', () => {
     }
     const before = { ...state.player };
     expect(movePlayer(state, 'left')).toBe(false);
-    expect(state.player).toEqual(before);
+    expect(state.player).toMatchObject(before);
     expect(isWalkable(state.map, state.player.x - 1, state.player.y)).toBe(false);
   });
 
@@ -46,7 +46,7 @@ describe('movePlayer', () => {
       ['up', 0, 1],
     ];
     const [direction, dx, dy] = directions.find(([, dx, dy]) => isWalkable(state.map, stairs.x + dx, stairs.y + dy))!;
-    state.player = { x: stairs.x + dx, y: stairs.y + dy };
+    Object.assign(state.player, { x: stairs.x + dx, y: stairs.y + dy });
 
     expect(movePlayer(state, direction)).toBe(true);
     expect(state.log[0]).toContain('лестницу');

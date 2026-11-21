@@ -5,6 +5,8 @@ export type MonsterKind = 'rat' | 'goblin' | 'orc';
 
 export interface MonsterTemplate {
   name: string;
+  /** Имя в винительном падеже: «ты бьёшь крысу». */
+  nameAccusative: string;
   glyph: string;
   color: string;
   maxHp: number;
@@ -17,9 +19,9 @@ export interface MonsterTemplate {
 }
 
 export const MONSTER_TEMPLATES: Record<MonsterKind, MonsterTemplate> = {
-  rat: { name: 'Крыса', glyph: 'r', color: '#a89f91', maxHp: 4, attack: 2, defense: 0, sightRange: 5, spawnWeight: 50 },
-  goblin: { name: 'Гоблин', glyph: 'g', color: '#7fbf5f', maxHp: 8, attack: 3, defense: 1, sightRange: 7, spawnWeight: 35 },
-  orc: { name: 'Орк', glyph: 'o', color: '#d9603b', maxHp: 14, attack: 5, defense: 2, sightRange: 6, spawnWeight: 15 },
+  rat: { name: 'Крыса', nameAccusative: 'крысу', glyph: 'r', color: '#a89f91', maxHp: 4, attack: 2, defense: 0, sightRange: 5, spawnWeight: 50 },
+  goblin: { name: 'Гоблин', nameAccusative: 'гоблина', glyph: 'g', color: '#7fbf5f', maxHp: 8, attack: 3, defense: 1, sightRange: 7, spawnWeight: 35 },
+  orc: { name: 'Орк', nameAccusative: 'орка', glyph: 'o', color: '#d9603b', maxHp: 14, attack: 5, defense: 2, sightRange: 6, spawnWeight: 15 },
 };
 
 export interface Monster {

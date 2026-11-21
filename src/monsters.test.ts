@@ -92,7 +92,7 @@ describe('поведение монстров', () => {
       '#..........#',
       '############',
     ]);
-    state.player = { x: 1, y: 1 };
+    Object.assign(state.player, { x: 1, y: 1 });
     state.monsters = [{ id: 1, kind: 'goblin', x: 8, y: 1, hp: 8, target: null, ...monster }];
     state.log = [];
     return state;
@@ -120,10 +120,10 @@ describe('поведение монстров', () => {
     expect(state.monsters[0].target).toBeNull();
   });
 
-  it('герой не может пройти сквозь монстра', () => {
+  it('герой не проходит сквозь монстра, а атакует его', () => {
     const state = gameWithOneMonster({ x: 2 });
-    expect(movePlayer(state, 'right')).toBe(false);
-    expect(state.player).toEqual({ x: 1, y: 1 });
-    expect(state.log[0]).toBe('Гоблин преграждает путь.');
+    expect(movePlayer(state, 'right')).toBe(true);
+    expect(state.player).toMatchObject({ x: 1, y: 1 });
+    expect(state.monsters[0].hp).toBeLessThan(8);
   });
 });

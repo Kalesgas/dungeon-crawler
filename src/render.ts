@@ -69,5 +69,30 @@ export function render(ctx: CanvasRenderingContext2D, state: GameState): void {
 
   ctx.fillStyle = TILE_STYLE.floor.background;
   ctx.fillRect(player.x * TILE_SIZE, player.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-  drawGlyph(ctx, player.x, player.y, PLAYER_GLYPH, PLAYER_COLOR);
+  drawGlyph(ctx, player.x, player.y, state.gameOver ? '%' : PLAYER_GLYPH, state.gameOver ? '#8a2a22' : PLAYER_COLOR);
+
+  if (state.gameOver) {
+    drawGameOver(ctx, state);
+  }
+}
+
+function drawGameOver(ctx: CanvasRenderingContext2D, state: GameState): void {
+  const width = state.map.width * TILE_SIZE;
+  const height = state.map.height * TILE_SIZE;
+  const font = ctx.font;
+
+  ctx.fillStyle = 'rgba(8, 7, 11, 0.8)';
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.fillStyle = '#d9483b';
+  ctx.font = `bold ${TILE_SIZE * 3}px ui-monospace, Consolas, monospace`;
+  ctx.fillText('GAME OVER', width / 2, height / 2 - TILE_SIZE * 2);
+
+  ctx.fillStyle = '#d8d4e3';
+  ctx.font = `${TILE_SIZE}px ui-monospace, Consolas, monospace`;
+  ctx.fillText(`Ходов: ${state.turn} · Убито монстров: ${state.kills}`, width / 2, height / 2 + TILE_SIZE);
+  ctx.fillStyle = '#f2c14e';
+  ctx.fillText('Нажми R, чтобы начать заново', width / 2, height / 2 + TILE_SIZE * 3);
+
+  ctx.font = font;
 }
