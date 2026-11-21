@@ -49,6 +49,24 @@ export function isWalkable(map: DungeonMap, x: number, y: number): boolean {
   return getTile(map, x, y) !== 'wall';
 }
 
+/**
+ * Стена, которая касается пола (в том числе по диагонали).
+ * Только такие стены видны игроку — остальная скала остаётся пустотой.
+ */
+export function isWallVisible(map: DungeonMap, x: number, y: number): boolean {
+  if (getTile(map, x, y) !== 'wall') {
+    return false;
+  }
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      if ((dx !== 0 || dy !== 0) && isWalkable(map, x + dx, y + dy)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 export function roomCenter(room: Room): Position {
   return {
     x: room.x + Math.floor(room.width / 2),
