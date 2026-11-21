@@ -22,6 +22,7 @@ describe('movePlayer', () => {
 
   it('не пускает героя в стену', () => {
     const state = createGame(42);
+    state.monsters = []; // чтобы монстр не подошёл и не загородил путь
     // Идём влево, пока не упрёмся в стену.
     while (movePlayer(state, 'left')) {
       // шагаем
@@ -34,6 +35,7 @@ describe('movePlayer', () => {
 
   it('пишет сообщение, когда герой встаёт на лестницу', () => {
     const state = createGame(42);
+    state.monsters = [];
     const stairsIndex = state.map.tiles.indexOf('stairs');
     const stairs = { x: stairsIndex % state.map.width, y: Math.floor(stairsIndex / state.map.width) };
     // Ставим героя рядом с лестницей и делаем шаг на неё.
